@@ -134,7 +134,7 @@ public class InsertAndUpdate_Staff_Form extends javax.swing.JPanel {
 
         bg.setBackground(new java.awt.Color(255, 255, 255));
 
-        pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/karina1.jpg"))); // NOI18N
+        pic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/user (3).png"))); // NOI18N
 
         lbmaNV.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         lbmaNV.setForeground(new java.awt.Color(89, 89, 89));
