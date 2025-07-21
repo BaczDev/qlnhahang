@@ -388,14 +388,26 @@ public class InsertAndUpdate_Staff_Form extends javax.swing.JPanel {
             }
         } else {
             try {
-                //Cập nhật (Chỉ được cập nhật Tên,SĐT và Chức vụ)
+                // Kiểm tra các trường không được để trống
+                if (txttenNV.getText().trim().isEmpty() || 
+                    txttSDT.getText().trim().isEmpty() || 
+                    cbboxCvu.getSelectedItem() == null) {
+
+                    // Hiển thị thông báo thiếu thông tin
+                    obj.WarningLackofInfo(); // Giả sử bạn đã có hàm này để cảnh báo
+                    return; // Không thực hiện cập nhật
+                }
+
+                // Cập nhật (Chỉ được cập nhật Tên, SĐT và Chức vụ)
                 data.setTenNV(txttenNV.getText().trim());
-                data.setSdt(txttSDT.getText());
+                data.setSdt(txttSDT.getText().trim());
                 data.setChucvu(cbboxCvu.getSelectedItem().toString());
                 service.UpdateNV(data);
+
                 MS_Success success = new MS_Success((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), true);
                 success.showUpdateStaffSuccess();
                 main.showForm(new StaffManagement_Form(user, main));
+
             } catch (SQLException ex) {
                 Logger.getLogger(InsertAndUpdate_Staff_Form.class.getName()).log(Level.SEVERE, null, ex);
             }

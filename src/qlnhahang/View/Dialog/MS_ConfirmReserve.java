@@ -14,6 +14,10 @@ import java.sql.SQLException;
 import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 import org.jdesktop.animation.timing.Animator;
 import org.jdesktop.animation.timing.TimingTarget;
 import org.jdesktop.animation.timing.TimingTargetAdapter;
@@ -62,12 +66,51 @@ public class MS_ConfirmReserve extends javax.swing.JDialog {
         cmdOK.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
-                    service.setTableReserve(table.getID());
-                } catch (SQLException ex) {
-                    Logger.getLogger(MS_ConfirmReserve.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+        String tenNguoiDat = myTextField1.getText().trim();
+        String soDienThoai = myTextField2.getText().trim();
+
+        // Kiểm tra trống
+        if (tenNguoiDat.isEmpty()) {
+            JOptionPane.showMessageDialog(MS_ConfirmReserve.this,
+                    "Vui lòng nhập tên người đặt!",
+                    "Thiếu thông tin",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (soDienThoai.isEmpty()) {
+            JOptionPane.showMessageDialog(MS_ConfirmReserve.this,
+                    "Vui lòng nhập số điện thoại!",
+                    "Thiếu thông tin",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (!soDienThoai.matches("\\d{10}")) {
+            JOptionPane.showMessageDialog(MS_ConfirmReserve.this,
+                    "Số điện thoại phải gồm đúng 10 chữ số và không chứa ký tự khác!",
+                    "Số điện thoại không hợp lệ",
+                    JOptionPane.WARNING_MESSAGE);
+
+            return;
+        }
+
+        // Nếu hợp lệ thì đặt bàn
+        try {
+            service.setTableReserve(table.getID());
+            JOptionPane.showMessageDialog(MS_ConfirmReserve.this,
+                    "Đặt bàn thành công!",
+                    "Thành công",
+                    JOptionPane.INFORMATION_MESSAGE);
+            closeMenu();
+        } catch (SQLException ex) {
+            Logger.getLogger(MS_ConfirmReserve.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(MS_ConfirmReserve.this,
+                    "Có lỗi xảy ra khi đặt bàn!",
+                    "Lỗi hệ thống",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
         });
         setVisible(true);

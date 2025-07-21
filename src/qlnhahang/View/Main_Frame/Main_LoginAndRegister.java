@@ -110,17 +110,16 @@ public class Main_LoginAndRegister extends javax.swing.JFrame {
     private void register() {
         ModelNguoiDung user = loginAndRegister.getUser();
         try {
-            if (service.checkDuplicateEmail(user.getEmail())) {
-                showMessage(Message.MessageType.ERROR, "Email đã tồn tại");
-            } else {
-                service.insertUser(user);
-                showMessage(Message.MessageType.SUCCESS, "Đăng ký thành công");
-            }
+            service.insertUser(user); // đã kiểm tra email hợp lệ, trùng, sđt ở đây
+            showMessage(Message.MessageType.SUCCESS, "Đăng ký thành công");
+        } catch (IllegalArgumentException e) {
+            showMessage(Message.MessageType.ERROR, e.getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
             showMessage(Message.MessageType.ERROR, "Lỗi đăng ký");
         }
     }
+
     
     private void login() {
         ModelLogin data = loginAndRegister.getDataLogin();

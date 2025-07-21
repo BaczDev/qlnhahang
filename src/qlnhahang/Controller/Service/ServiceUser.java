@@ -46,8 +46,11 @@ public class ServiceUser {
 
         // Kiểm tra phone hợp lệ
         String phone = user.getPhone();
-        if (phone != null && !phone.matches("\\d{10,11}")) {
-            throw new IllegalArgumentException("Số điện thoại phải chứa 10-11 chữ số!");
+        if (phone == null || phone.trim().isEmpty()) {
+            throw new IllegalArgumentException("Vui lòng nhập số điện thoại");
+        }
+        if (!phone.matches("\\d{10}")) {
+            throw new IllegalArgumentException("Số điện thoại phải gồm đúng 10 chữ số!");
         }
 
         // Lấy ID_ND mới
