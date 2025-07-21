@@ -22,7 +22,7 @@ public class DatabaseConnection {
 
     // Thực hiện kết nối tới MySQL Database
     public void connectToDatabase() throws SQLException {
-        final String url = "jdbc:mysql://localhost:3306/test"; // Thay bằng tên DB của bạn
+        final String url = "jdbc:mysql://localhost:3306/qlnhahang"; // Thay bằng tên DB của bạn
         final String username = "root"; // Thay bằng username MySQL
         final String password = "bac22111"; // Thay bằng mật khẩu MySQL
 

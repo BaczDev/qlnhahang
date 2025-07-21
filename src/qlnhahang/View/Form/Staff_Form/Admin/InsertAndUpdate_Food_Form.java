@@ -393,39 +393,34 @@ public class InsertAndUpdate_Food_Form extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdOKActionPerformed
-            if (insert) {
-                //Thêm mới
-                if ("".equals(txttenMA.getText().trim()) || "".equals(txtgia.getText())) {
-                    obj.WarningLackofInfo();
-                } else {
-                    data.setTitle(txttenMA.getText().trim());
-                    data.setValue(Integer.parseInt(txtgia.getText()));
-                    data.setType(cbboxLoai.getSelectedItem().toString());
+            if ("".equals(txttenMA.getText().trim()) || "".equals(txtgia.getText().trim())) {
+                obj.WarningLackofInfo(); // Hiển thị thông báo thiếu thông tin
+            } else {
+                data.setTitle(txttenMA.getText().trim());
+                data.setValue(Integer.parseInt(txtgia.getText().trim()));
+                data.setType(cbboxLoai.getSelectedItem().toString());
+
+                if (insert) {
                     try {
                         service.insertMA(data);
-                        // Hiển thị thông báo thành công
                         MS_Success success = new MS_Success((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), true);
                         success.showAddFoodSuccess();
                     } catch (SQLException ex) {
                         Logger.getLogger(InsertAndUpdate_Food_Form.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    main.showForm(new MenuManagement_Form(main));
+                } else {
+                    try {
+                        service.UpdateMonAn(data);
+                        MS_Success success = new MS_Success((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), true);
+                        success.showUpdateFoodSuccess();
+                    } catch (SQLException ex) {
+                        Logger.getLogger(InsertAndUpdate_Food_Form.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            } else {
-                data.setTitle(txttenMA.getText().trim());
-                data.setValue(Integer.parseInt(txtgia.getText()));
-                data.setType(cbboxLoai.getSelectedItem().toString());
-                try {
-                    //Cập nhật (Chỉ được cập nhật Tên,Giá,Loại món ăn)
-                    service.UpdateMonAn(data);
-                    // Hiển thị thông báo thành công
-                    MS_Success success = new MS_Success((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), true);
-                    success.showUpdateFoodSuccess();
-                } catch (SQLException ex) {
-                    Logger.getLogger(InsertAndUpdate_Food_Form.class.getName()).log(Level.SEVERE, null, ex);
-                }
+
                 main.showForm(new MenuManagement_Form(main));
             }
+
         
     }//GEN-LAST:event_cmdOKActionPerformed
 
