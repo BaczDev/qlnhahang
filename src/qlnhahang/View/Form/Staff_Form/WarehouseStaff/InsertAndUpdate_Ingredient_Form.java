@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import qlnhahang.View.Dialog.MS_Warning;
+import qlnhahang.View.Main_Frame.Main_Admin_Frame;
 
 public class InsertAndUpdate_Ingredient_Form extends javax.swing.JPanel {
 
@@ -15,6 +17,7 @@ public class InsertAndUpdate_Ingredient_Form extends javax.swing.JPanel {
     private final MainForm main;
     private ModelNguyenLieu data;
     private boolean insert;  //Thêm hay sửa
+    private MS_Warning obj;
     public InsertAndUpdate_Ingredient_Form(MainForm main,ModelNguyenLieu data) {
         this.main = main;
         this.data=data;
@@ -24,6 +27,7 @@ public class InsertAndUpdate_Ingredient_Form extends javax.swing.JPanel {
 
     public void init() {
         service = new ServiceStaff();
+        obj = new MS_Warning(Main_Admin_Frame.getFrames()[0], true);
         if(data==null){
             insert=true;
             lbTitle.setText("Thêm NGUYÊN LIỆU");
@@ -263,10 +267,16 @@ public class InsertAndUpdate_Ingredient_Form extends javax.swing.JPanel {
     }//GEN-LAST:event_txtdongiaKeyTyped
 
     private void cmdOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdOKActionPerformed
+        if (txttenNL.getText().trim().isEmpty() || 
+        txtdongia.getText().trim().isEmpty() || 
+        jComboBoxDVT.getSelectedItem() == null) {
+        obj.WarningLackofInfo();
+        return;
+    }
         data.setTenNL(txttenNL.getText().trim());
         data.setDonGia(Integer.parseInt(txtdongia.getText()));
         data.setDvt(jComboBoxDVT.getSelectedItem().toString());
-      
+        
         try {
             if(insert){
                service.InsertNL(data);

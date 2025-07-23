@@ -26,6 +26,7 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 public class BillS_Form extends javax.swing.JPanel {
@@ -421,143 +422,159 @@ public class BillS_Form extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTienKHFocusLost
 
     private void cmdExportBillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdExportBillActionPerformed
-        //Tạo Document
-        PDDocument invc = new PDDocument();
-        //Tạo trang trống
-        PDPage newpage = new PDPage();
-        //Thêm trang trống
-        invc.addPage(newpage);
-        String title = "XIAO LONG BAO";
-        String subtitle = "HOA DON THANH TOAN";
-        String footer="THANK YOU FOR YOU PURCHASE";
-        String tenKH = "";
-        try {
-            tenKH = serviceS.getTenKH(bill.getIdKH());
-        } catch (SQLException ex) {
-            Logger.getLogger(BillS_Form.class.getName()).log(Level.SEVERE, null, ex);
+        // Tạo document mới
+PDDocument invc = new PDDocument();
+
+// Tạo trang trắng
+PDPage newpage = new PDPage();
+invc.addPage(newpage);
+
+String title = "XIAO LONG BAO";
+String subtitle = "HÓA ĐƠN THANH TOÁN";
+String footer = "XIN CẢM ƠN QUÝ KHÁCH";
+String tenKH = "";
+
+try {
+    tenKH = serviceS.getTenKH(bill.getIdKH());
+} catch (SQLException ex) {
+    Logger.getLogger(BillS_Form.class.getName()).log(Level.SEVERE, null, ex);
+}
+
+DefaultTableModel model = (DefaultTableModel) tableCTHD.getModel();
+
+PDPage mypage = invc.getPage(0);
+
+try {
+    // Load font Unicode Times New Roman
+    PDFont font = PDType0Font.load(invc, new File("C:/Windows/Fonts/times.ttf"));
+    PDFont fontBold = PDType0Font.load(invc, new File("C:/Windows/Fonts/timesbd.ttf"));
+
+    PDPageContentStream cs = new PDPageContentStream(invc, mypage);
+
+    // Tiêu đề
+    cs.beginText();
+    cs.setFont(fontBold, 22);
+    cs.newLineAtOffset(200, 750);
+    cs.showText(title);
+    cs.endText();
+
+    cs.beginText();
+    cs.setFont(font, 18);
+    cs.newLineAtOffset(220, 720);
+    cs.showText(subtitle);
+    cs.endText();
+
+    // Thông tin khách hàng
+    cs.beginText();
+    cs.setFont(font, 14);
+    cs.setLeading(20f);
+    cs.newLineAtOffset(60, 670);
+    cs.showText("Mã Hóa Đơn: ");
+    cs.newLine();
+    cs.showText("Ngày: ");
+    cs.newLine();
+    cs.showText("Khách Hàng: ");
+    cs.endText();
+
+    cs.beginText();
+    cs.setFont(font, 14);
+    cs.setLeading(20f);
+    cs.newLineAtOffset(170, 670);
+    cs.showText(bill.getIdHoaDon() + "");
+    cs.newLine();
+    cs.showText(bill.getNgayHD());
+    cs.newLine();
+    cs.showText(tenKH);
+    cs.endText();
+
+    // Vẽ bảng chi tiết hóa đơn
+    float tableStartY = 600;
+    float rowHeight = 20;
+    int numCols = model.getColumnCount();
+    int numRows = model.getRowCount();
+    float[] colWidths = new float[numCols];
+    colWidths[0] = 200;
+    for (int i = 1; i < numCols; i++) colWidths[i] = 100;
+
+    float x = 60;
+    float y = tableStartY;
+
+    // Header
+    for (int col = 0; col < numCols; col++) {
+        cs.beginText();
+        cs.setFont(fontBold, 13);
+        cs.newLineAtOffset(x, y);
+        cs.showText(model.getColumnName(col));
+        cs.endText();
+        x += colWidths[col];
+    }
+
+    // Dữ liệu
+    for (int row = 0; row < numRows; row++) {
+        x = 60;
+        y -= rowHeight;
+        for (int col = 0; col < numCols; col++) {
+            cs.beginText();
+            cs.setFont(font, 12);
+            cs.newLineAtOffset(x, y);
+            cs.showText(model.getValueAt(row, col).toString());
+            cs.endText();
+            x += colWidths[col];
         }
-        DefaultTableModel model = (DefaultTableModel) tableCTHD.getModel();
-        PDFont font = PDType1Font.TIMES_ROMAN;
-        //Thêm dữ liệu vào file pdf
-        PDPage mypage = invc.getPage(0);
-        try {
-            PDPageContentStream cs = new PDPageContentStream(invc, mypage);
-            //Viết tiêu đề Hóa đơn
-            cs.beginText();
-            cs.setFont(PDType1Font.TIMES_BOLD, 22);
-            cs.newLineAtOffset(165, 750);
-            cs.showText(title);
-            cs.endText();
+    }
 
-            cs.beginText();
-            cs.setFont(font, 18);
-            cs.newLineAtOffset(220, 690);
-            cs.showText(subtitle);
-            cs.endText();
-            //Thêm thông tin khách hàng
-            cs.beginText();
-            cs.setFont(font, 14);
-            cs.setLeading(20f);
-            cs.newLineAtOffset(60, 610);
-            cs.showText("Ma Hoa Don: ");
-            cs.newLine();
-            cs.showText("Ngay: ");
-            cs.newLine();
-            cs.showText("Khach Hang: ");
-            cs.endText();
+    // Thông tin thanh toán
+    float startYPayment = y - 40;
 
-            cs.beginText();
-            cs.setFont(font, 14);
-            cs.setLeading(20f);
-            cs.newLineAtOffset(170, 610);
-            cs.showText(bill.getIdHoaDon() + "");
-            cs.newLine();
-            cs.showText(bill.getNgayHD());
-            cs.newLine();
-            cs.showText(tenKH);
-            cs.endText();
+    cs.beginText();
+    cs.setFont(font, 14);
+    cs.setLeading(20f);
+    cs.newLineAtOffset(280, startYPayment);
+    cs.showText("Tiền món ăn: ");
+    cs.newLine();
+    cs.showText("Tiền giảm giá: ");
+    cs.newLine();
+    cs.showText("Tổng tiền: ");
+    cs.newLine();
+    cs.showText("Tiền khách đưa: ");
+    cs.newLine();
+    cs.showText("Tiền trả lại: ");
+    cs.endText();
 
-            //Thêm CTHD
-            //Cột
-            int x = 80;
-            for (int col = 0; col < model.getColumnCount(); col++) {
-                cs.beginText();
-                cs.setFont(font, 14);
-                cs.newLineAtOffset(x, 520);
-                cs.showText(model.getColumnName(col));
-                cs.endText();
-                if (col == 0) {
-                    x += 200;
-                } else {
-                    x += 120;
-                }
-            }
-            //Hàng
-            x = 80;
-            for (int col = 0; col < model.getColumnCount(); col++) {
-                cs.beginText();
-                cs.setFont(font, 14);
-                cs.setLeading(20f);
-                cs.newLineAtOffset(x, 500);
-                for (int row = 0; row < model.getRowCount(); row++) {
-                    cs.showText(model.getValueAt(row, col).toString());
-                    cs.newLine();
-                }
-                cs.endText();
-                if (col == 0) {
-                    x += 200;
-                } else {
-                    x += 120;
-                }
+    cs.beginText();
+    cs.setFont(font, 14);
+    cs.setLeading(20f);
+    cs.newLineAtOffset(420, startYPayment);
+    cs.showText(txtTienmonan.getText());
+    cs.newLine();
+    cs.showText(txtTiengiam.getText());
+    cs.newLine();
+    cs.showText(txtTongtien.getText());
+    cs.newLine();
+    cs.showText(df.format(Integer.parseInt(txtTienKH.getText())) + "đ");
+    cs.newLine();
+    cs.showText(txtTientra.getText());
+    cs.endText();
 
-            }
-            //Thêm dữ liệu phần thanh toán
-            cs.beginText();
-            cs.setFont(font, 14);
-            cs.setLeading(20f);
-            cs.newLineAtOffset(280, 480 - (model.getRowCount() * 20));
-            cs.showText("Tien mon an: ");
-            cs.newLine();
-            cs.showText("Tien giam gia: ");
-            cs.newLine();
-            cs.showText("Tong tien: ");
-            cs.newLine();
-            cs.showText("Tien khach dua: ");
-            cs.newLine();
-            cs.showText("Tien tra lai: ");
-            cs.endText();
+    // Footer
+    cs.beginText();
+    cs.setFont(fontBold, 16);
+    cs.newLineAtOffset(180, startYPayment - 100);
+    cs.showText(footer);
+    cs.endText();
 
-            cs.beginText();
-            cs.setFont(font, 14);
-            cs.setLeading(20f);
-            cs.newLineAtOffset(400, 480 - (model.getRowCount() * 20));
-            cs.showText(txtTienmonan.getText());
-            cs.newLine();
-            cs.showText(txtTiengiam.getText());
-            cs.newLine();
-            cs.showText(txtTongtien.getText());
-            cs.newLine();
-            cs.showText(df.format(Integer.parseInt(txtTienKH.getText())) + "d");
-            cs.newLine();
-            cs.showText(txtTientra.getText());
-            cs.endText();
-            //Cuối Hóa đơn
-            cs.beginText();
-            cs.setFont(PDType1Font.TIMES_BOLD, 20);
-            cs.newLineAtOffset(150, 350 - (model.getRowCount() * 20));
-            cs.showText(footer);
-            cs.endText();
-            //Đóng file
-            cs.close();
-            //Lưu file
-            invc.save(".\\src\\ExportBill\\HoaDon_ID-" + bill.getIdHoaDon() + ".pdf");
-            File file=new File("src\\ExportBill\\HoaDon_ID-" + bill.getIdHoaDon() + ".pdf");
-            String path=file.getAbsolutePath();
-            obj.ExportFileSuccess(path);
+    cs.close();
 
-        } catch (IOException ex) {
-            Logger.getLogger(BillS_Form.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    // Lưu file
+    String fileName = ".\\src\\ExportBill\\HoaDon_ID-" + bill.getIdHoaDon() + ".pdf";
+    invc.save(fileName);
+    File file = new File(fileName);
+    obj.ExportFileSuccess(file.getAbsolutePath());
+
+} catch (IOException ex) {
+    Logger.getLogger(BillS_Form.class.getName()).log(Level.SEVERE, null, ex);
+}
+
     }//GEN-LAST:event_cmdExportBillActionPerformed
 
 
