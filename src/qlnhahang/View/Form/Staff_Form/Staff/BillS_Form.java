@@ -450,17 +450,29 @@ try {
     PDFont fontBold = PDType0Font.load(invc, new File("C:/Windows/Fonts/timesbd.ttf"));
 
     PDPageContentStream cs = new PDPageContentStream(invc, mypage);
+    
+    // Lấy chiều rộng trang
+    float pageWidth = mypage.getMediaBox().getWidth();
 
-    // Tiêu đề
+    // ==== Căn giữa TITLE ====
+    float titleFontSize = 22;
+    float titleWidth = fontBold.getStringWidth(title) / 1000 * titleFontSize;
+    float titleX = (pageWidth - titleWidth) / 2;
+
     cs.beginText();
-    cs.setFont(fontBold, 22);
-    cs.newLineAtOffset(200, 750);
+    cs.setFont(fontBold, titleFontSize);
+    cs.newLineAtOffset(titleX, 750);
     cs.showText(title);
     cs.endText();
 
+    // ==== Căn giữa SUBTITLE ====
+    float subtitleFontSize = 18;
+    float subtitleWidth = font.getStringWidth(subtitle) / 1000 * subtitleFontSize;
+    float subtitleX = (pageWidth - subtitleWidth) / 2;
+
     cs.beginText();
-    cs.setFont(font, 18);
-    cs.newLineAtOffset(220, 720);
+    cs.setFont(font, subtitleFontSize);
+    cs.newLineAtOffset(subtitleX, 720);
     cs.showText(subtitle);
     cs.endText();
 
