@@ -403,7 +403,8 @@ public class InsertAndUpdate_Food_Form extends javax.swing.JPanel {
                 if (insert) {
                     try {
                         service.insertMA(data);
-                        MS_Success success = new MS_Success((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), true);
+                        MS_Success success = new MS_Success((java.awt.Frame) 
+                                javax.swing.SwingUtilities.getWindowAncestor(this), true);
                         success.showAddFoodSuccess();
                     } catch (SQLException ex) {
                         Logger.getLogger(InsertAndUpdate_Food_Form.class.getName()).log(Level.SEVERE, null, ex);
@@ -411,7 +412,8 @@ public class InsertAndUpdate_Food_Form extends javax.swing.JPanel {
                 } else {
                     try {
                         service.UpdateMonAn(data);
-                        MS_Success success = new MS_Success((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), true);
+                        MS_Success success = new MS_Success((java.awt.Frame) 
+                                javax.swing.SwingUtilities.getWindowAncestor(this), true);
                         success.showUpdateFoodSuccess();
                     } catch (SQLException ex) {
                         Logger.getLogger(InsertAndUpdate_Food_Form.class.getName()).log(Level.SEVERE, null, ex);

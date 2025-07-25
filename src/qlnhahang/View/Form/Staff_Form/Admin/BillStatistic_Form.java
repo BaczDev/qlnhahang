@@ -301,13 +301,11 @@ public class BillStatistic_Form extends javax.swing.JPanel {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Danh sách Hóa Đơn");
             DefaultTableModel model = (DefaultTableModel) tableHD.getModel();
-
             // Font in đậm cho tiêu đề
             CellStyle headerStyle = workbook.createCellStyle();
             Font boldFont = workbook.createFont();
             boldFont.setBold(true);
             headerStyle.setFont(boldFont);
-
             // Ghi dòng tiêu đề
             Row headerRow = sheet.createRow(0);
             for (int col = 0; col < model.getColumnCount(); col++) {
@@ -315,7 +313,6 @@ public class BillStatistic_Form extends javax.swing.JPanel {
                 cell.setCellValue(model.getColumnName(col));
                 cell.setCellStyle(headerStyle);
             }
-
             // Ghi dữ liệu từng dòng
             for (int row = 0; row < model.getRowCount(); row++) {
                 Row dataRow = sheet.createRow(row + 1);
@@ -324,17 +321,15 @@ public class BillStatistic_Form extends javax.swing.JPanel {
                     dataRow.createCell(col).setCellValue(value != null ? value.toString() : "");
                 }
             }
-
             // Tự động điều chỉnh độ rộng cột
             for (int col = 0; col < model.getColumnCount(); col++) {
                 sheet.autoSizeColumn(col);
             }
-
+            
             // Tạo thư mục nếu chưa tồn tại
             String folderPath = ".\\src\\ExportFile_Excel\\";
             File folder = new File(folderPath);
             if (!folder.exists()) folder.mkdirs();
-
             // Tạo đường dẫn và lưu file
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
             String fileName = "DanhsachHoaDon_" + sdf.format(new Date()) + ".xlsx";
@@ -342,7 +337,6 @@ public class BillStatistic_Form extends javax.swing.JPanel {
             try (FileOutputStream out = new FileOutputStream(fullPath)) {
                 workbook.write(out);
             }
-
             // Gửi thông báo và in ra đường dẫn
             File file = new File(fullPath);
             String absolutePath = file.getAbsolutePath();

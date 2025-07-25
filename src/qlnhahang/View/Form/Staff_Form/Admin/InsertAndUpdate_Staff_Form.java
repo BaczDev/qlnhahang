@@ -379,7 +379,8 @@ public class InsertAndUpdate_Staff_Form extends javax.swing.JPanel {
                 data.setChucvu(cbboxCvu.getSelectedItem().toString());
                 try {
                     service.insertNV(data);
-                    MS_Success success = new MS_Success((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), true);
+                    MS_Success success = new MS_Success((java.awt.Frame) 
+                            javax.swing.SwingUtilities.getWindowAncestor(this), true);
                     success.showAddStaffSuccess();
                 } catch (SQLException ex) {
                     Logger.getLogger(InsertAndUpdate_Staff_Form.class.getName()).log(Level.SEVERE, null, ex);
@@ -394,8 +395,8 @@ public class InsertAndUpdate_Staff_Form extends javax.swing.JPanel {
                     cbboxCvu.getSelectedItem() == null) {
 
                     // Hiển thị thông báo thiếu thông tin
-                    obj.WarningLackofInfo(); // Giả sử bạn đã có hàm này để cảnh báo
-                    return; // Không thực hiện cập nhật
+                    obj.WarningLackofInfo(); 
+                    return; 
                 }
 
                 // Cập nhật (Chỉ được cập nhật Tên, SĐT và Chức vụ)
@@ -404,7 +405,8 @@ public class InsertAndUpdate_Staff_Form extends javax.swing.JPanel {
                 data.setChucvu(cbboxCvu.getSelectedItem().toString());
                 service.UpdateNV(data);
 
-                MS_Success success = new MS_Success((java.awt.Frame) javax.swing.SwingUtilities.getWindowAncestor(this), true);
+                MS_Success success = new MS_Success((java.awt.Frame) 
+                        javax.swing.SwingUtilities.getWindowAncestor(this), true);
                 success.showUpdateStaffSuccess();
                 main.showForm(new StaffManagement_Form(user, main));
 

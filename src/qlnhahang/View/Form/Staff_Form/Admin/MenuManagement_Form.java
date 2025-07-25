@@ -86,7 +86,8 @@ public class MenuManagement_Form extends javax.swing.JPanel {
         tableMA.removeAllRow();
         for (ModelMonAn data : list) {
             if ((data.getTitle()).toLowerCase().contains(txt.toLowerCase())) {
-                tableMA.addRow(new Object[]{data.getId(), data.getTitle(), df.format(data.getValue()) + "đ", data.getType(), data.getState()});
+                tableMA.addRow(new Object[]{data.getId(), data.getTitle(), 
+                    df.format(data.getValue()) + "đ", data.getType(), data.getState()});
             }
         }
         tableMA.repaint();

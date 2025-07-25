@@ -300,7 +300,6 @@ public class ImportStatistic_Form extends javax.swing.JPanel {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Danh sach Phieu Nhap Kho");
             DefaultTableModel model = (DefaultTableModel) tablePNK.getModel();
-
             // Tạo header
             Row headerRow = sheet.createRow(0);
             CellStyle headerStyle = workbook.createCellStyle();
@@ -312,7 +311,6 @@ public class ImportStatistic_Form extends javax.swing.JPanel {
                 cell.setCellValue(model.getColumnName(col));
                 cell.setCellStyle(headerStyle);
             }
-
             // Thêm dữ liệu
             for (int row = 0; row < model.getRowCount(); row++) {
                 Row dataRow = sheet.createRow(row + 1);
@@ -321,7 +319,6 @@ public class ImportStatistic_Form extends javax.swing.JPanel {
                     cell.setCellValue(model.getValueAt(row, col).toString());
                 }
             }
-
             // Lưu file
             String fileName = "DanhsachPNK_" + simpleDateFormat.format(new Date()) + ".xlsx";
             String filePath = ".\\src\\ExportFile_Excel\\" + fileName;
@@ -330,7 +327,6 @@ public class ImportStatistic_Form extends javax.swing.JPanel {
             try (FileOutputStream out = new FileOutputStream(file)) {
                 workbook.write(out);
             }
-
             System.out.println(file.getAbsolutePath());
             obj.ExportFileSuccess(file.getAbsolutePath());
         } catch (Exception e) {

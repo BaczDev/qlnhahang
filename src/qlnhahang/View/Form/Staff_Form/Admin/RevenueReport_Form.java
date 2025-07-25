@@ -57,26 +57,35 @@ public class RevenueReport_Form extends javax.swing.JPanel {
                 pre_expenses = service.getPreMonthCostNK();
                 pre_profit = pre_revenue - pre_expenses;
                 if (revenue > pre_revenue) {
-                    descR = "Tăng " + (Math.round((((double) revenue - pre_revenue) / pre_revenue) * 100) + "% so với tháng trước");
+                    descR = "Tăng " + (Math.round((((double) revenue - pre_revenue) / pre_revenue) * 100) +
+                            "% so với tháng trước");
                 } else {
-                    descR = "Giảm " + (Math.round((((double) pre_revenue - revenue) / pre_revenue) * 100) + "% so với tháng trước");
+                    descR = "Giảm " + (Math.round((((double) pre_revenue - revenue) / pre_revenue) * 100) +
+                            "% so với tháng trước");
                 }
 
                 if (expenses > pre_expenses) {
-                    descE = "Tăng " + (Math.round((((double) expenses - pre_expenses) / pre_expenses) * 100) + "% so với tháng trước");
+                    descE = "Tăng " + (Math.round((((double) expenses - pre_expenses) / pre_expenses) * 100) +
+                            "% so với tháng trước");
                 } else {
-                    descE = "Giảm " + (Math.round((((double) pre_expenses - expenses) / pre_expenses) * 100) + "% so với tháng trước");
+                    descE = "Giảm " + (Math.round((((double) pre_expenses - expenses) / pre_expenses) * 100) +
+                            "% so với tháng trước");
                 }
 
                 if (profit > pre_profit) {
-                    descP = "Tăng " + (Math.round((((double) profit - pre_profit) / pre_profit) * 100) + "% so với tháng trước");
+                    descP = "Tăng " + (Math.round((((double) profit - pre_profit) / pre_profit) * 100) +
+                            "% so với tháng trước");
                 } else {
-                    descP = "Giảm " + (Math.round((((double) pre_profit - profit) / pre_profit) * 100) + "% so với tháng trước");
+                    descP = "Giảm " + (Math.round((((double) pre_profit - profit) / pre_profit) * 100) +
+                            "% so với tháng trước");
                 }
             }
-            Crevenue.setData(new ModelCard(new ImageIcon(getClass().getResource("/Icons/revenue.png")), "Doanh Thu", df.format(revenue) + "đ", descR));
-            Cexpenses.setData(new ModelCard(new ImageIcon(getClass().getResource("/Icons/expenses.png")), "Chi Phí", df.format(expenses) + "đ", descE));
-            Cprofit.setData(new ModelCard(new ImageIcon(getClass().getResource("/Icons/profit.png")), "Lợi Nhuận", df.format(profit) + "đ", descP));
+            Crevenue.setData(new ModelCard(new ImageIcon(getClass().getResource("/Icons/revenue.png")), "Doanh Thu",
+                    df.format(revenue) + "đ", descR));
+            Cexpenses.setData(new ModelCard(new ImageIcon(getClass().getResource("/Icons/expenses.png")), "Chi Phí",
+                    df.format(expenses) + "đ", descE));
+            Cprofit.setData(new ModelCard(new ImageIcon(getClass().getResource("/Icons/profit.png")), "Lợi Nhuận",
+                    df.format(profit) + "đ", descP));
 
             Crevenue.repaint();
             Cexpenses.repaint();

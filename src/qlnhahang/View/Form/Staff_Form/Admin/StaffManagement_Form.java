@@ -89,7 +89,8 @@ public class StaffManagement_Form extends javax.swing.JPanel {
         tableNV.removeAllRow();
         for (ModelNhanVien data : list) {
             if ((data.getTenNV()).toLowerCase().contains(txt.toLowerCase())) {
-                tableNV.addRow(new Object[]{data.getId_NV(), data.getTenNV(), data.getNgayVL(), data.getSdt(), data.getChucvu(),data.getTinhTrang()});
+                tableNV.addRow(new Object[]{data.getId_NV(), data.getTenNV(), 
+                    data.getNgayVL(), data.getSdt(), data.getChucvu(),data.getTinhTrang()});
             }
         }
         tableNV.repaint();
